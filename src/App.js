@@ -26,8 +26,14 @@ function App() {
       .catch(error => console.log(error))
   }, [])
 
+  // A function to set the selectedMovie state to the clicked movie and pass into the MovieDetails component
   const movieClicked = movie => {
     setSelectedMovie(movie);
+  }
+
+  // A function to refresh the selectedMovie state following successful user rating and pass back into MovieDetails
+  const updateMovie = movie => {
+    setSelectedMovie(movie)
   }
 
   return (
@@ -37,7 +43,7 @@ function App() {
       </header>
       <div className="layout">
           <MovieList movies={movies} movieClicked={movieClicked}/>
-          <MovieDetails movie={selectedMovie}/>
+          <MovieDetails movie={selectedMovie} updateMovie={updateMovie}/>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import {faStar} from "@fortawesome/free-solid-svg-icons";
 
 const MovieDetails = (props) => {
 
-  const {movie} = props;
+  const {movie, updateMovie} = props;
   const [highlighted, setHighlighted] = useState(-1)
 
   // Function to highlight the number of stars up to where the user hovers
@@ -26,9 +26,23 @@ const MovieDetails = (props) => {
         })
       }
     )
+      .then(() => getDetails())
+      .catch(error => console.log(error))
+  }
+
+  // Function to get refresh the movie details following successful user rating
+  const getDetails =  () => {
+    fetch(`${process.env.REACT_APP_URL}api/movies/${movie.id}/`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${process.env.REACT_APP_TOKEN}`
+        }
+      }
+    )
       .then(res => res.json())
-      // Call the setMovies hook and set the value to the API movies data
-      .then(res => console.log(res))
+      .then(res => updateMovie(res))
       .catch(error => console.log(error))
   }
 
