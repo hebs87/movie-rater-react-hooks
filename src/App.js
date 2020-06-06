@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import API from './services/api-service';
 import MovieList from "./components/movie-list";
 import MovieDetails from "./components/movie-details";
 import MovieForm from "./components/movie-form";
@@ -13,16 +14,8 @@ function App() {
   // Fetch data using useEffect hook and specify dependency for triggering it - empty array ensure it acts like
   // componentDidMount() lifecycle method
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_URL}api/movies/`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${process.env.REACT_APP_TOKEN}`
-        }
-      }
-    )
-      .then(res => res.json())
+    // Call the relevant method on the API service to load the movie list
+    API.loadMovieList()
       // Call the setMovies hook and set the value to the API movies data
       .then(res => setMovies(res))
       .catch(error => console.log(error))

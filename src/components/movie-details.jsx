@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
+import API from "../services/api-service";
 
 const MovieDetails = (props) => {
 
@@ -14,34 +15,14 @@ const MovieDetails = (props) => {
 
   // Function to submit the user's rating on click
   const rateClicked = rating => event => {
-    fetch(`${process.env.REACT_APP_URL}api/movies/${movie.id}/rate_movie/`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${process.env.REACT_APP_TOKEN}`
-        },
-        body: JSON.stringify({
-          stars: rating
-        })
-      }
-    )
+    API.rateMovie(movie.id, {stars: rating})
       .then(() => getDetails())
       .catch(error => console.log(error))
   }
 
   // Function to get refresh the movie details following successful user rating
   const getDetails =  () => {
-    fetch(`${process.env.REACT_APP_URL}api/movies/${movie.id}/`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${process.env.REACT_APP_TOKEN}`
-        }
-      }
-    )
-      .then(res => res.json())
+    API.loadMovie(movie.id)
       .then(res => updateMovie(res))
       .catch(error => console.log(error))
   }
