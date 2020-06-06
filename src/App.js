@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import MovieList from "./components/movie-list";
 import './App.css';
 
 function App() {
 
   const [movies, setMovies] = useState([])
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   // Fetch data using useEffect hook and specify dependency for triggering it - empty array ensure it acts like
   // componentDidMount() lifecycle method
@@ -23,21 +25,18 @@ function App() {
       .catch(error => console.log(error))
   }, [])
 
+  const movieClicked = movie => {
+    setSelectedMovie(movie);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Movie Rater</h1>
       </header>
       <div className="layout">
-        <div>
-          <h2>Movie List</h2>
-          {movies.map(movie => (
-            <p key={movie.id}>{movie.title}</p>
-          ))}
-        </div>
-        <div>
-          <h2>Movie Details</h2>
-        </div>
+          <MovieList movies={movies} movieClicked={movieClicked}/>
+          <div>Movie Details</div>
       </div>
     </div>
   );
