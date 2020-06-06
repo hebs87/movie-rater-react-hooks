@@ -33,3 +33,14 @@
   font-size: 1.8rem;
   cursor: pointer;
 }
+
+.movie-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-gap: 10px;
+  align-items: center;
+}
+
+.movie-item svg {
+  font-size: 1.2rem;
+}

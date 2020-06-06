@@ -20,7 +20,7 @@ const MovieList = (props) => {
       {
         props.movies &&
         props.movies.map(movie => (
-          <div key={movie.id}>
+          <div key={movie.id} className='movie-item'>
             <h2 onClick={movieClicked(movie)}>{movie.title}</h2>
             <FontAwesomeIcon icon={faEdit} onClick={() => editClicked(movie)}/>
             <FontAwesomeIcon icon={faTrash}/>
