@@ -1,10 +1,36 @@
-import React from "react";
+import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 
 const MovieDetails = (props) => {
 
   const {movie} = props;
+  const [highlighted, setHighlighted] = useState(-1)
+
+  // Function to highlight the number of stars up to where the user hovers
+  const highlightedRating = highlightedVal => event => {
+    setHighlighted(highlightedVal)
+  }
+
+  // Function to submit the user's rating on click
+  const rateClicked = rating => event => {
+    fetch(`${process.env.REACT_APP_URL}api/movies/${movie.id}/rate_movie/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${process.env.REACT_APP_TOKEN}`
+        },
+        body: JSON.stringify({
+          stars: rating
+        })
+      }
+    )
+      .then(res => res.json())
+      // Call the setMovies hook and set the value to the API movies data
+      .then(res => console.log(res))
+      .catch(error => console.log(error))
+  }
 
   return (
     <div>
@@ -19,6 +45,23 @@ const MovieDetails = (props) => {
           <FontAwesomeIcon icon={faStar} className={movie.avg_rating > 3 ? 'orange': ''}/>
           <FontAwesomeIcon icon={faStar} className={movie.avg_rating > 4 ? 'orange': ''}/>
           <span>({movie.no_of_ratings})</span>
+          <div className="rate-container">
+            <h2>Rate It</h2>
+            {
+              [...Array(5)].map((e, i) => {
+                return (
+                  <FontAwesomeIcon
+                    key={i}
+                    icon={faStar}
+                    className={highlighted > i -1 ? 'purple' : ''}
+                    onMouseEnter={highlightedRating(i)}
+                    onMouseLeave={highlightedRating(-1)}
+                    onClick={rateClicked(i+1)}
+                  />
+                )
+              })
+            }
+          </div>
         </React.Fragment>
       }
       {!movie && null}
