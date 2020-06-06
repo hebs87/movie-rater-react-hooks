@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import MovieList from "./components/movie-list";
 import MovieDetails from "./components/movie-details";
+import MovieForm from "./components/movie-form";
 import './App.css';
 
 function App() {
 
   const [movies, setMovies] = useState([])
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [editedMovie, setEditedMovie] = useState(null);
 
   // Fetch data using useEffect hook and specify dependency for triggering it - empty array ensure it acts like
   // componentDidMount() lifecycle method
-  useEffect(()=> {
+  useEffect(() => {
     fetch(`${process.env.REACT_APP_URL}api/movies/`,
       {
         method: 'GET',
@@ -26,14 +28,17 @@ function App() {
       .catch(error => console.log(error))
   }, [])
 
-  // A function to set the selectedMovie state to the clicked movie and pass into the MovieDetails component
-  const movieClicked = movie => {
+  // A function to load the movie details that the user clicks, or refresh the movie details when the user rates
+  // the movie
+  const loadMovie = movie => {
     setSelectedMovie(movie);
+    setEditedMovie(null);
   }
 
-  // A function to refresh the selectedMovie state following successful user rating and pass back into MovieDetails
-  const updateMovie = movie => {
-    setSelectedMovie(movie)
+  // A function to set the edited movie to the movie that the user clicks and display the edit form
+  const editClicked = movie => {
+    setEditedMovie(movie);
+    setSelectedMovie(null);
   }
 
   return (
@@ -42,8 +47,21 @@ function App() {
         <h1>Movie Rater</h1>
       </header>
       <div className="layout">
-          <MovieList movies={movies} movieClicked={movieClicked}/>
-          <MovieDetails movie={selectedMovie} updateMovie={updateMovie}/>
+        {
+          movies &&
+          <MovieList movies={movies} movieClicked={loadMovie} editClicked={editClicked}/>
+        }
+        {!movies && null}
+        {
+          selectedMovie &&
+          <MovieDetails movie={selectedMovie} updateMovie={loadMovie}/>
+        }
+        {!selectedMovie && null}
+        {
+          editedMovie &&
+          <MovieForm movie={editedMovie}/>
+        }
+        {!editedMovie && null}
       </div>
     </div>
   );
