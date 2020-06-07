@@ -62,6 +62,14 @@ function App() {
     setSelectedMovie(movie);
   }
 
+  // A function to refresh the movies list and remove the deleted movie from it
+  const deleteClicked = movie => {
+    const newMovies = movies.filter(mov => mov.id !== movie.id);
+    setMovies(newMovies);
+    setSelectedMovie(null);
+    setEditedMovie(null);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -71,19 +79,31 @@ function App() {
         {
           movies &&
           <div>
-            <MovieList movies={movies} movieClicked={loadMovie} editClicked={editClicked}/>
+            <MovieList
+              movies={movies}
+              movieClicked={loadMovie}
+              editClicked={editClicked}
+              deleteClicked={deleteClicked}
+            />
             <button onClick={addMovie}>Add Movie</button>
           </div>
         }
         {!movies && null}
         {
           selectedMovie &&
-          <MovieDetails movie={selectedMovie} updateMovie={loadMovie}/>
+          <MovieDetails
+            movie={selectedMovie}
+            updateMovie={loadMovie}
+          />
         }
         {!selectedMovie && null}
         {
           editedMovie &&
-          <MovieForm movie={editedMovie} updatedMovie={updatedMovie} newMovie={newMovie}/>
+          <MovieForm
+            movie={editedMovie}
+            updatedMovie={updatedMovie}
+            newMovie={newMovie}
+          />
         }
         {!editedMovie && null}
       </div>

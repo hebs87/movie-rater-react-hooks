@@ -1,6 +1,7 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
+import API from "../services/api-service";
 
 const MovieList = (props) => {
 
@@ -15,6 +16,14 @@ const MovieList = (props) => {
     props.editClicked(movie);
   }
 
+  // A function to call the deleteMovie API method to delete the movie from the database, then call the deleteClicked
+  // function from App and pass in the movie on click of the delete icon
+  const deleteClicked = movie => {
+    API.deleteMovie(movie.id)
+      .then(() => props.deleteClicked(movie))
+      .catch(error => console.log(error));
+  }
+
   return (
     <div>
       {
@@ -23,7 +32,7 @@ const MovieList = (props) => {
           <div key={movie.id} className='movie-item'>
             <h2 onClick={movieClicked(movie)}>{movie.title}</h2>
             <FontAwesomeIcon icon={faEdit} onClick={() => editClicked(movie)}/>
-            <FontAwesomeIcon icon={faTrash}/>
+            <FontAwesomeIcon icon={faTrash} onClick={() => deleteClicked(movie)}/>
           </div>
         ))}
     </div>

@@ -70,4 +70,16 @@ export default class API {
     )
       .then(res => res.json())
   }
+
+  static deleteMovie(movieId) {
+    return fetch(`${URL}api/movies/${movieId}/`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${TOKEN}`
+        }
+      }
+    )
+  }
 }
