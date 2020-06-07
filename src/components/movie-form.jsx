@@ -3,7 +3,7 @@ import API from '../services/api-service';
 
 const MovieForm = (props) => {
 
-  const {movie, updatedMovie} = props;
+  const {movie, updatedMovie, newMovie} = props;
   const [title, setTitle] = useState(movie.title);
   const [description, setDescription] = useState(movie.description);
 
@@ -11,6 +11,12 @@ const MovieForm = (props) => {
     // Call the relevant API class method and pass in the required arguments
     API.updateMovie(movie.id, {title, description})
       .then(res => updatedMovie(res))
+      .catch(error => console.log(error))
+  }
+
+  const addMovie = () => {
+    API.addMovie({title, description})
+      .then(res => newMovie(res))
       .catch(error => console.log(error))
   }
 
@@ -29,7 +35,14 @@ const MovieForm = (props) => {
           <textarea id="description" type="text" placeholder="Description" defaultValue={description}
                     onChange={event => setDescription(event.target.value)}></textarea>
           <br/>
-          <button onClick={updateClicked}>Update</button>
+          {
+            movie.id &&
+            <button onClick={updateClicked}>Update</button>
+          }
+          {
+            !movie.id &&
+            <button onClick={addMovie}>Add</button>
+          }
         </React.Fragment>
       }
     </div>

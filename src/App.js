@@ -48,6 +48,20 @@ function App() {
     setSelectedMovie(movie);
   }
 
+  // A function to render a blank movie form when the Add Movie button is clicked
+  const addMovie = () => {
+    setEditedMovie({title: '', description: ''});
+    setSelectedMovie(null);
+  }
+
+  // A function to render the updated movie list when the user adds a new movie
+  const newMovie = movie => {
+    const newMovies = [...movies, movie];
+    setMovies(newMovies);
+    setEditedMovie(null);
+    setSelectedMovie(movie);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -56,7 +70,10 @@ function App() {
       <div className="layout">
         {
           movies &&
-          <MovieList movies={movies} movieClicked={loadMovie} editClicked={editClicked}/>
+          <div>
+            <MovieList movies={movies} movieClicked={loadMovie} editClicked={editClicked}/>
+            <button onClick={addMovie}>Add Movie</button>
+          </div>
         }
         {!movies && null}
         {
@@ -66,7 +83,7 @@ function App() {
         {!selectedMovie && null}
         {
           editedMovie &&
-          <MovieForm movie={editedMovie} updatedMovie={updatedMovie}/>
+          <MovieForm movie={editedMovie} updatedMovie={updatedMovie} newMovie={newMovie}/>
         }
         {!editedMovie && null}
       </div>

@@ -56,4 +56,18 @@ export default class API {
     )
       .then(res => res.json())
   }
+
+  static addMovie(body) {
+    return fetch(`${URL}api/movies/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${TOKEN}`
+        },
+        body: JSON.stringify(body)
+      }
+    )
+      .then(res => res.json())
+  }
 }
