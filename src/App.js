@@ -34,6 +34,20 @@ function App() {
     setSelectedMovie(null);
   }
 
+  // A function to update the edited movie in the displayed list when a user updates it
+  const updatedMovie = movie => {
+    const newMovies = movies.map(mov => {
+      // Return the edited movie if the IDs match or return the existing movie
+      if (mov.id === movie.id) {
+        return movie;
+      }
+      return mov;
+    });
+    setMovies(newMovies);
+    setEditedMovie(null);
+    setSelectedMovie(movie);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -52,7 +66,7 @@ function App() {
         {!selectedMovie && null}
         {
           editedMovie &&
-          <MovieForm movie={editedMovie}/>
+          <MovieForm movie={editedMovie} updatedMovie={updatedMovie}/>
         }
         {!editedMovie && null}
       </div>

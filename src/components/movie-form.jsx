@@ -3,14 +3,14 @@ import API from '../services/api-service';
 
 const MovieForm = (props) => {
 
-  const {movie} = props;
+  const {movie, updatedMovie} = props;
   const [title, setTitle] = useState(movie.title);
   const [description, setDescription] = useState(movie.description);
 
   const updateClicked = () => {
     // Call the relevant API class method and pass in the required arguments
     API.updateMovie(movie.id, {title, description})
-      .then(res => console.log(res))
+      .then(res => updatedMovie(res))
       .catch(error => console.log(error))
   }
 
