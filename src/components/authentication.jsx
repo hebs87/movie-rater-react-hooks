@@ -6,6 +6,7 @@ const Authentication = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoginView, setIsLoginView] = useState(true);
 
   // Destructure the token and setToken hook props from the Context Provider in index.js
   const [token, setToken] = useCookies(['token'])
@@ -20,12 +21,27 @@ const Authentication = () => {
   const login = () => (
     API.loginUser({username, password})
       // Call the setToken hook and pass in the token value, only if a token is returned following successful login
-      .then(res => res.token? setToken('token', res.token) : null)
+      .then(res => res.token ? setToken('token', res.token) : null)
+      .catch(error => console.log(error))
+  )
+
+  const register = () => (
+    API.registerUser({username, password})
+      // Call the setToken hook and pass in the token value, only if a token is returned following successful login
+      .then(() => login())
       .catch(error => console.log(error))
   )
 
   return (
     <React.Fragment>
+      {
+        isLoginView &&
+        <h1>Login</h1>
+      }
+      {
+        !isLoginView &&
+        <h1>Register</h1>
+      }
       <label htmlFor="username">Username</label>
       <br/>
       <input id="username" type="text" placeholder="Username" value={username}
@@ -36,7 +52,24 @@ const Authentication = () => {
       <input id="password" type="password" placeholder="Password" defaultValue={password}
              onChange={event => setPassword(event.target.value)}/>
       <br/>
-      <button onClick={login}>Update</button>
+      {
+        isLoginView &&
+        <React.Fragment>
+          <button onClick={login}>Login</button>
+          <p>Don't have an account?
+            <span className="register-link" onClick={() => setIsLoginView(false)}> Register here</span>
+          </p>
+        </React.Fragment>
+      }
+      {
+        !isLoginView &&
+        <React.Fragment>
+          <button onClick={register}>Register</button>
+          <p>Already have an account?
+            <span className="register-link" onClick={() => setIsLoginView(true)}> Login</span>
+          </p>
+        </React.Fragment>
+      }
     </React.Fragment>
   )
 }

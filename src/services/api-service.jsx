@@ -16,6 +16,19 @@ export default class API {
       .then(res => res.json())
   }
 
+  static registerUser(body) {
+    return fetch(`${URL}api/users/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+      }
+    )
+      .then(res => res.json())
+  }
+
   static loadMovieList(token) {
     return fetch(`${URL}api/movies/`,
       {
