@@ -1,14 +1,26 @@
-import React, {useState} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import API from "../services/api-service";
+import {TokenContext} from '../index';
 
 const Authentication = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // Destructure the token and setToken hook props from the Context Provider in index.js
+  const {token, setToken} = useContext(TokenContext)
+
+  // Route the user to the /movies route when logged in
+  useEffect(() => {
+    if (token) {
+      window.location.href = '/movies';
+    }
+  }, [token]);
+
   const login = () => (
     API.loginUser({username, password})
-      .then(res => console.log(res.token))
+      // Call the setToken hook and pass in the token value
+      .then(res => setToken(res.token))
       .catch(error => console.log(error))
   )
 
