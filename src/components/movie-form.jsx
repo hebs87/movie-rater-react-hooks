@@ -1,11 +1,16 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import API from '../services/api-service';
 
 const MovieForm = (props) => {
 
   const {movie, updatedMovie, newMovie} = props;
-  const [title, setTitle] = useState(movie.title);
-  const [description, setDescription] = useState(movie.description);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    setTitle(movie.title);
+    setDescription(movie.description);
+  }, [movie])
 
   const updateClicked = () => {
     // Call the relevant API class method and pass in the required arguments
