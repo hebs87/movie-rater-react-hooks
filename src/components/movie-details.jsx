@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {useCookies} from 'react-cookie';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 import API from "../services/api-service";
@@ -7,6 +8,7 @@ const MovieDetails = (props) => {
 
   const {movie, updateMovie} = props;
   const [highlighted, setHighlighted] = useState(-1)
+  const [token] = useCookies(['token']);
 
   // Function to highlight the number of stars up to where the user hovers
   const highlightedRating = highlightedVal => event => {
@@ -15,14 +17,14 @@ const MovieDetails = (props) => {
 
   // Function to submit the user's rating on click
   const rateClicked = rating => event => {
-    API.rateMovie(movie.id, {stars: rating})
+    API.rateMovie(movie.id, {stars: rating}, token.token)
       .then(() => getDetails())
       .catch(error => console.log(error))
   }
 
   // Function to get refresh the movie details following successful user rating
   const getDetails =  () => {
-    API.loadMovie(movie.id)
+    API.loadMovie(movie.id, token.token)
       .then(res => updateMovie(res))
       .catch(error => console.log(error))
   }

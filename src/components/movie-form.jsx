@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {useCookies} from 'react-cookie';
 import API from '../services/api-service';
 
 const MovieForm = (props) => {
@@ -6,6 +7,7 @@ const MovieForm = (props) => {
   const {movie, updatedMovie, newMovie} = props;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [token] = useCookies(['token']);
 
   useEffect(() => {
     setTitle(movie.title);
@@ -14,13 +16,13 @@ const MovieForm = (props) => {
 
   const updateClicked = () => {
     // Call the relevant API class method and pass in the required arguments
-    API.updateMovie(movie.id, {title, description})
+    API.updateMovie(movie.id, {title, description}, token.token)
       .then(res => updatedMovie(res))
       .catch(error => console.log(error))
   }
 
   const addMovie = () => {
-    API.addMovie({title, description})
+    API.addMovie({title, description}, token.token)
       .then(res => newMovie(res))
       .catch(error => console.log(error))
   }

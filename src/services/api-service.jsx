@@ -1,4 +1,3 @@
-const TOKEN = process.env.REACT_APP_TOKEN
 const URL = process.env.REACT_APP_URL
 
 // Create an API class that we can call wherever we want to use our API service (GET/POST)
@@ -17,52 +16,52 @@ export default class API {
       .then(res => res.json())
   }
 
-  static loadMovieList() {
+  static loadMovieList(token) {
     return fetch(`${URL}api/movies/`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Token ${TOKEN}`
+          'Authorization': `Token ${token}`
         }
       }
     )
       .then(res => res.json())
   }
 
-  static loadMovie(movieId) {
+  static loadMovie(movieId, token) {
     return fetch(`${URL}api/movies/${movieId}/`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Token ${TOKEN}`
+          'Authorization': `Token ${token}`
         }
       }
     )
       .then(res => res.json())
   }
 
-  static rateMovie(movieId, body) {
+  static rateMovie(movieId, body, token) {
     return fetch(`${URL}api/movies/${movieId}/rate_movie/`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Token ${TOKEN}`
+          'Authorization': `Token ${token}`
         },
         body: JSON.stringify(body)
       }
     )
   }
 
-  static updateMovie(movieId, body) {
+  static updateMovie(movieId, body, token) {
     return fetch(`${URL}api/movies/${movieId}/`,
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Token ${TOKEN}`
+          'Authorization': `Token ${token}`
         },
         body: JSON.stringify(body)
       }
@@ -70,13 +69,13 @@ export default class API {
       .then(res => res.json())
   }
 
-  static addMovie(body) {
+  static addMovie(body, token) {
     return fetch(`${URL}api/movies/`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Token ${TOKEN}`
+          'Authorization': `Token ${token}`
         },
         body: JSON.stringify(body)
       }
@@ -84,13 +83,13 @@ export default class API {
       .then(res => res.json())
   }
 
-  static deleteMovie(movieId) {
+  static deleteMovie(movieId, token) {
     return fetch(`${URL}api/movies/${movieId}/`,
       {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Token ${TOKEN}`
+          'Authorization': `Token ${token}`
         }
       }
     )

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useCookies} from 'react-cookie';
 import API from './services/api-service';
 import MovieList from "./components/movie-list";
 import MovieDetails from "./components/movie-details";
@@ -10,16 +11,24 @@ function App() {
   const [movies, setMovies] = useState([])
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [editedMovie, setEditedMovie] = useState(null);
+  const [token] = useCookies(['token']);
 
   // Fetch data using useEffect hook and specify dependency for triggering it - empty array ensure it acts like
   // componentDidMount() lifecycle method
   useEffect(() => {
     // Call the relevant method on the API service to load the movie list
-    API.loadMovieList()
+    API.loadMovieList(token.token)
       // Call the setMovies hook and set the value to the API movies data
       .then(res => setMovies(res))
       .catch(error => console.log(error))
-  }, [])
+  }, []);
+
+  // Route the user to the login page route if no token is present
+  useEffect(() => {
+    if (!token.token) {
+      window.location.href = '/';
+    }
+  }, [token]);
 
   // A function to load the movie details that the user clicks, or refresh the movie details when the user rates
   // the movie
