@@ -11,7 +11,7 @@ function App() {
   const [movies, setMovies] = useState([])
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [editedMovie, setEditedMovie] = useState(null);
-  const [token] = useCookies(['token']);
+  const [token, removeToken] = useCookies(['token']);
 
   // Fetch data using useEffect hook and specify dependency for triggering it - empty array ensure it acts like
   // componentDidMount() lifecycle method
@@ -79,10 +79,16 @@ function App() {
     setEditedMovie(null);
   }
 
+  // Log the user out and clear the token from the cookies
+  const logout = () => {
+    removeToken('token', '');
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Movie Rater</h1>
+        <button onClick={logout}>Logout</button>
       </header>
       <div className="layout">
         {
