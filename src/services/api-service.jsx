@@ -4,6 +4,19 @@ const URL = process.env.REACT_APP_URL
 // Create an API class that we can call wherever we want to use our API service (GET/POST)
 export default class API {
   // Create static methods in which we return the relevant API calls
+  static loginUser(body) {
+    return fetch(`${URL}auth/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+      }
+    )
+      .then(res => res.json())
+  }
+
   static loadMovieList() {
     return fetch(`${URL}api/movies/`,
       {
